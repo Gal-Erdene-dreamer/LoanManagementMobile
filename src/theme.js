@@ -13,3 +13,8 @@ export const darkTheme = {
     ...DarkTheme.colors,
   },
 }
+
+export const Colors = {
+  light: lightTheme.colors,
+  dark: darkTheme.colors,
+}

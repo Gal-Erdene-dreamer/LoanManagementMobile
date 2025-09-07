@@ -102,16 +102,16 @@ function RootStack() {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <Stack.Screen name="HomeTabs" component={HomeTabs} />
+      <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
       {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
     </Stack.Navigator>
   )
 }
 
 function RootNavigation() {
-  const { isDark } = useConfigStore()
+  const { theme } = useConfigStore()
   return (
-    <NavigationContainer theme={isDark ? darkTheme : lightTheme}>
+    <NavigationContainer theme={theme === 'dark' ? darkTheme : lightTheme}>
       <RootStack />
     </NavigationContainer>
   )

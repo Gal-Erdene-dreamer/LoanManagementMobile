@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import { ThemedView } from '../../components/ThemedView'
+import tw from 'twrnc'
 
 function HomeScreen() {
   return (
-    <View>
-      <Text>HomeScreen ksjdkskd</Text>
-    </View>
+    <ThemedView style={[tw`flex-1 items-center`]}>
+      <Text>HomeScreen</Text>
+    </ThemedView>
   )
 }
 

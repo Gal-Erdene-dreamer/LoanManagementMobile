@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import { ThemedView } from '../../components/ThemedView'
+import tw from 'twrnc'
 
 function ProfileScreen() {
   return (
-    <View>
+    <ThemedView style={tw`flex-1`}>
       <Text>ProfileScreen</Text>
-    </View>
+    </ThemedView>
   )
 }
 

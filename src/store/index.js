@@ -5,8 +5,8 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 export const useConfigStore = create()(
   persist(
     (set, get) => ({
-      isDark: false,
-      addABear: (payload) => set({ isDark: !!payload }),
+      theme: 'light',
+      setTheme: (payload) => set({ theme: !!payload }),
     }),
     {
       name: 'config-storage',
