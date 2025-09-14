@@ -4,10 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { HouseIcon, UserIcon } from 'lucide-react-native'
 import tw from 'twrnc'
-import { useConfigStore } from '../store'
+import { useConfigStore, useUserStore } from '../store'
 import { lightTheme, darkTheme } from '../theme'
 import HomeScreen from './home'
 import ProfileScreen from './profile'
+import LoginScreen from './login'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -108,11 +109,41 @@ function RootStack() {
   )
 }
 
+function AuthStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        headerMode: 'screen',
+        headerTitleAlign: 'left',
+        headerTransparent: true,
+        headerShown: true,
+        headerTitleStyle: { fontSize: 16, fontWeight: 'bold' },
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={
+          {
+            /* headerShown: false */
+          }
+        }
+      />
+    </Stack.Navigator>
+  )
+}
+
 function RootNavigation() {
-  const { theme } = useConfigStore()
+  const theme = useConfigStore(state => state.theme)
+  const isAuthenticated = useUserStore(state => state.isAuthenticated)
+
   return (
     <NavigationContainer theme={theme === 'dark' ? darkTheme : lightTheme}>
-      <RootStack />
+      {isAuthenticated ? <RootStack /> : <AuthStack />}
     </NavigationContainer>
   )
 }
