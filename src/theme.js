@@ -1,4 +1,5 @@
 import { DefaultTheme, DarkTheme } from '@react-navigation/native'
+import { DefaultTheme as PaperTheme } from 'react-native-paper'
 
 export const lightTheme = {
   ...DefaultTheme,
@@ -17,4 +18,12 @@ export const darkTheme = {
 export const Colors = {
   light: lightTheme.colors,
   dark: darkTheme.colors,
+}
+
+export const paperTheme = {
+  ...PaperTheme,
+  colors: {
+    ...PaperTheme.colors,
+    ...DefaultTheme.colors,
+  },
 }

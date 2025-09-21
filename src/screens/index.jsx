@@ -99,7 +99,9 @@ function RootStack() {
         headerTitleAlign: 'center',
         headerTransparent: true,
         headerShown: true,
+        autoHideHomeIndicator: true,
         headerTitleStyle: { fontSize: 16, fontWeight: 'bold' },
+        headerStyle: { height: 'auto' },
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
@@ -116,11 +118,12 @@ function AuthStack() {
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: 'horizontal',
-        headerMode: 'screen',
+        headerMode: 'float',
         headerTitleAlign: 'left',
         headerTransparent: true,
-        headerShown: true,
+        headerShown: false,
         headerTitleStyle: { fontSize: 16, fontWeight: 'bold' },
+        headerStyle: { height: 'auto' },
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
@@ -129,7 +132,7 @@ function AuthStack() {
         component={LoginScreen}
         options={
           {
-            /* headerShown: false */
+            /* headerShown: true */
           }
         }
       />

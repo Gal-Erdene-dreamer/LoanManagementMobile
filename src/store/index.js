@@ -20,6 +20,8 @@ export const useUserStore = create()(
     set => ({
       isAuthenticated: false,
       setIsAuthenticated: payload => set({ isAuthenticated: !!payload }),
+      token: null,
+      setToken: token => set({ token }),
     }),
     {
       name: 'user-storage',

@@ -14,5 +14,7 @@ export function ThemedView({
   const headerHeight = useHeaderHeight()
   const paddingTop = hasHeaderTitle ? headerHeight : 0
 
+  console.log(headerHeight, 'sls')
+
   return <View style={[{ backgroundColor, paddingTop }, style]} {...otherProps} />
 }
