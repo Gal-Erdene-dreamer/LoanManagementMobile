@@ -8,10 +8,10 @@ import { useState } from 'react'
 import { authApi } from '../../api'
 
 function LoginScreen({}) {
-  const { setIsAuthenticated, setToken } = useUserStore()
+  const { setIsAuthenticated, setToken, setUser } = useUserStore()
   const [showPassword, setShowPassword] = useState(false)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('admin@gmail.com')
+  const [password, setPassword] = useState('test1234')
   const [loading, setLoading] = useState(false)
 
   const login = async () => {
@@ -22,8 +22,10 @@ function LoginScreen({}) {
       console.log('error', error)
       return
     }
+    console.log('data', data)
     setIsAuthenticated(true)
-    setToken('ets12')
+    setUser(data.user)
+    setToken(data.token)
   }
   return (
     <ThemedView hasHeaderTitle style={[tw`flex-1 justify-center px-4 gap-4 items-center`]}>

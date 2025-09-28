@@ -7,17 +7,17 @@ import { Avatar } from 'react-native-paper'
 import { useUserStore } from '../../store'
 
 function ProfileScreen() {
-  const setIsAuthenticated = useUserStore(state => state.setIsAuthenticated)
+  const { setIsAuthenticated, user } = useUserStore()
   const logout = () => {
-    console.log('logout')
-    setIsAuthenticated(false)
+    console.log('logout', user)
+    // setIsAuthenticated(false)
   }
   return (
     <ThemedView style={tw`flex-1`}>
       <ThemedText>ProfileScreen</ThemedText>
       <Avatar.Icon icon={'face-woman-profile'} color="red" style={tw`bg-secondary`} />
       <ThemedButton onPress={logout}>
-        <Text>jsdjsdj</Text>
+        <Text>logout</Text>
       </ThemedButton>
     </ThemedView>
   )

@@ -15,12 +15,17 @@ import { useEffect } from 'react'
 import { PaperProvider } from 'react-native-paper'
 import { paperTheme } from './theme'
 import { useUserStore } from './store'
-import client from './api'
+import { SplashView } from './components/SplashView'
 
 function App() {
+  const isHydrated = useUserStore(state => state.isHydrated)
   useEffect(() => {
     SystemNavigationBar.stickyImmersive()
   }, [])
+
+  if (!isHydrated) {
+    return <SplashView />
+  }
 
   return (
     <PaperProvider theme={paperTheme} settings={{ rippleEffectEnabled: true }}>

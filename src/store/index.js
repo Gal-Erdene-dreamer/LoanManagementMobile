@@ -22,9 +22,29 @@ export const useUserStore = create()(
       setIsAuthenticated: payload => set({ isAuthenticated: !!payload }),
       token: null,
       setToken: token => set({ token }),
+      user: null,
+      setUser: user => set({ user }),
+      isHydrated: false,
+      setIsHydrated: value => set({ isHydrated: !!value }),
     }),
     {
       name: 'user-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+      onRehydrateStorage: state => () => {
+        return state.setIsHydrated(true)
+      },
+    }
+  )
+)
+
+export const useNetworkStore = create()(
+  persist(
+    set => ({
+      isConnected: false,
+      setIsConnected: p => set({ isConnected: !!p }),
+    }),
+    {
+      name: 'network-storage',
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

@@ -4,11 +4,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { HouseIcon, UserIcon } from 'lucide-react-native'
 import tw from 'twrnc'
-import { useConfigStore, useUserStore } from '../store'
+import { useConfigStore, useNetworkStore, useUserStore } from '../store'
 import { lightTheme, darkTheme } from '../theme'
 import HomeScreen from './home'
 import ProfileScreen from './profile'
 import LoginScreen from './login'
+import { useEffect, useRef } from 'react'
+import NetInfo from '@react-native-community/netinfo'
+import ToastManager, { Toast } from 'toastify-react-native'
+import { CustomToast } from '../components/CustomToast'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -140,13 +144,62 @@ function AuthStack() {
   )
 }
 
+const toastConfig = {
+  custom: CustomToast,
+  // customError: CustomError,
+}
+
 function RootNavigation() {
   const theme = useConfigStore(state => state.theme)
   const isAuthenticated = useUserStore(state => state.isAuthenticated)
+  const setIsConnected = useNetworkStore(state => state.setIsConnected)
+  const isConnectedBefore = useRef(false)
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      console.log('Connection type', state)
+      setIsConnected(state.isConnected)
+      if (!state.isConnected) {
+        // show toast
+        Toast.show({
+          type: 'custom',
+          text1: 'Интернет холболт саллаа!⚠️',
+          position: 'bottom',
+          autoHide: false,
+          props: { color: 'red' },
+        })
+        isConnectedBefore.current = true
+        return
+      }
+      if (isConnectedBefore.current) {
+        // show network resetted
+        Toast.show({
+          type: 'custom',
+          text1: 'Интернет холболт сэргэлээ!🥳',
+          position: 'bottom',
+          visibilityTime: 2000,
+        })
+        // for guarantee
+        isConnectedBefore.current = false
+      }
+    })
+    return () => {
+      unsubscribe()
+    }
+  }, [])
+
+  const isDark = theme === 'dark'
 
   return (
-    <NavigationContainer theme={theme === 'dark' ? darkTheme : lightTheme}>
+    <NavigationContainer theme={isDark ? darkTheme : lightTheme}>
       {isAuthenticated ? <RootStack /> : <AuthStack />}
+      <ToastManager
+        config={toastConfig}
+        theme={isDark ? 'dark' : 'light'}
+        showProgressBar={true}
+        showCloseIcon={true}
+        animationStyle="fade"
+      />
     </NavigationContainer>
   )
 }
