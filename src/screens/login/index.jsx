@@ -6,15 +6,16 @@ import { ThemedButton } from '../../components/ui/Button'
 import { Text, TextInput } from 'react-native-paper'
 import { useState } from 'react'
 import { authApi } from '../../api'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 function LoginScreen({}) {
-  const { setIsAuthenticated, setToken, setUser } = useUserStore()
+  const login = useUserStore(state => state.login)
   const [showPassword, setShowPassword] = useState(false)
   const [username, setUsername] = useState('admin@gmail.com')
   const [password, setPassword] = useState('test1234')
   const [loading, setLoading] = useState(false)
 
-  const login = async () => {
+  const handleLogin = async () => {
     setLoading(true)
     const { data, error } = await authApi.login({ username, password })
     setLoading(false)
@@ -23,9 +24,7 @@ function LoginScreen({}) {
       return
     }
     console.log('data', data)
-    setIsAuthenticated(true)
-    setUser(data.user)
-    setToken(data.token)
+    login()
   }
   return (
     <ThemedView hasHeaderTitle style={[tw`flex-1 justify-center px-4 gap-4 items-center`]}>
@@ -50,7 +49,7 @@ function LoginScreen({}) {
           />
         }
       />
-      <ThemedButton disabled={loading} onPress={login} uppercase loading={loading}>
+      <ThemedButton disabled={loading} onPress={handleLogin} loading={loading}>
         Login
       </ThemedButton>
     </ThemedView>

@@ -26,6 +26,8 @@ export const useUserStore = create()(
       setUser: user => set({ user }),
       isHydrated: false,
       setIsHydrated: value => set({ isHydrated: !!value }),
+      login: (user, token) => set({ user, token, isAuthenticated: true }),
+      logout: () => set({ user: null, token: null, isAuthenticated: false }),
     }),
     {
       name: 'user-storage',

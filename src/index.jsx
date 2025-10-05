@@ -5,7 +5,7 @@
  * @format
  */
 
-import { useColorScheme } from 'react-native'
+import { useColorScheme, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import SystemNavigationBar from 'react-native-system-navigation-bar'
@@ -38,9 +38,10 @@ function App() {
 
 function AppContent() {
   const safeAreaInsets = useSafeAreaInsets()
+  console.log(safeAreaInsets, 'slsl')
 
   return (
-    <SafeAreaView style={[tw`flex-1`]}>
+    <SafeAreaView style={[tw`flex-1`]} edges={['bottom']}>
       <GestureHandlerRootView>
         <RootNavigation />
       </GestureHandlerRootView>

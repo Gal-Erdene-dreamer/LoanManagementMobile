@@ -1,8 +1,7 @@
 import { View } from 'react-native'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { NavigationContainer } from '@react-navigation/native'
-import { HouseIcon, UserIcon } from 'lucide-react-native'
+import { NavigationContainer, useTheme } from '@react-navigation/native'
 import tw from 'twrnc'
 import { useConfigStore, useNetworkStore, useUserStore } from '../store'
 import { lightTheme, darkTheme } from '../theme'
@@ -13,37 +12,29 @@ import { useEffect, useRef } from 'react'
 import NetInfo from '@react-native-community/netinfo'
 import ToastManager, { Toast } from 'toastify-react-native'
 import { CustomToast } from '../components/CustomToast'
+import { Icon, Text } from 'react-native-paper'
+import { BlurView } from '@react-native-community/blur'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const ICONS = {
-  Home: HouseIcon,
-  Profile: UserIcon,
+  Home: 'home',
+  Profile: 'account',
+  Wallet: 'wallet',
 }
 
 const CustomTabIcon = ({ routeName, color, focused, size }) => {
-  console.log('hoem', routeName)
-  const IconComponent = ICONS[routeName]
+  const iconName = ICONS[routeName]
   return (
     <View style={tw`justify-center items-center`}>
-      <View
-        style={{
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          backgroundColor: focused ? '#3b82f6' : 'transparent',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <IconComponent size={size} color={focused ? 'white' : color} />
-      </View>
+      <Icon source={iconName} size={size} color={color} />
     </View>
   )
 }
 
 function HomeTabs() {
+  const { colors } = useTheme()
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -51,27 +42,23 @@ function HomeTabs() {
         tabBarIcon: ({ color, focused, size }) => (
           <CustomTabIcon routeName={route.name} color={color} focused={focused} size={size} />
         ),
-        tabBarActiveTintColor: '#3b82f6',
-        tabBarInactiveTintColor: '#9ca3af',
-        tabBarStyle: {
-          backgroundColor: 'white',
-          borderTopWidth: 1,
-          borderTopColor: '#f3f4f6',
-          paddingBottom: 0,
-          paddingTop: 8,
-          height: 60,
-          borderRadius: 50,
-          overflow: 'hidden',
-          position: 'absolute',
-          bottom: 0,
-          marginHorizontal: 16,
-          marginBottom: 0,
-        },
-        tabBarLabel: () => null,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.border,
+        tabBarBackground: () => (
+          <BlurView
+            style={tw`absolute inset-0`}
+            blurType="light"
+            blurAmount={25}
+            reducedTransparencyFallbackColor="white"
+          />
+        ),
+        tabBarHideOnKeyboard: true,
         headerShown: true,
         headerTransparent: true,
         headerTitleAlign: 'center',
         headerTitleStyle: { fontSize: 16, fontWeight: 'bold' },
+        headerStatusBarHeight: 10,
+        // headerStyle: { height: 'auto' },
       })}
     >
       <Tab.Screen
@@ -82,10 +69,17 @@ function HomeTabs() {
         }}
       />
       <Tab.Screen
+        name="Wallet"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerTitle: '',
+          headerTitle: 'Profile',
         }}
       />
     </Tab.Navigator>
@@ -99,12 +93,11 @@ function RootStack() {
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: 'horizontal',
-        headerMode: 'screen',
         headerTitleAlign: 'center',
         headerTransparent: true,
         headerShown: true,
         autoHideHomeIndicator: true,
-        headerTitleStyle: { fontSize: 16, fontWeight: 'bold' },
+        headerTitleStyle: tw`text-lg`,
         headerStyle: { height: 'auto' },
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
@@ -122,11 +115,10 @@ function AuthStack() {
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: 'horizontal',
-        headerMode: 'float',
-        headerTitleAlign: 'left',
+        headerTitleAlign: 'center',
         headerTransparent: true,
         headerShown: false,
-        headerTitleStyle: { fontSize: 16, fontWeight: 'bold' },
+        headerTitleStyle: tw`text-lg`,
         headerStyle: { height: 'auto' },
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
@@ -134,11 +126,9 @@ function AuthStack() {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={
-          {
-            /* headerShown: true */
-          }
-        }
+        options={{
+          headerShown: true,
+        }}
       />
     </Stack.Navigator>
   )

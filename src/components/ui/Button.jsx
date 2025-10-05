@@ -18,6 +18,7 @@ export function ThemedButton({
       style={[{ color }, style]}
       onPress={onPress}
       labelStyle={[tw`px-4`, labelStyle]}
+      uppercase
       {...otherProps}
     >
       {children}

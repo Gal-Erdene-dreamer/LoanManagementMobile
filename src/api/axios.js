@@ -2,8 +2,8 @@ import axios from 'axios'
 import { useUserStore } from '../store'
 
 const client = axios.create({
-  // baseURL: 'http://localhost:8000/api/v1',
-  baseURL: 'http://10.0.2.2:8000/api/v1',
+  // baseURL: 'http://10.0.2.2:8000/api/v1',
+  baseURL: 'http://192.168.1.119:8000/api/v1',
   timeout: 5000,
   headers: {
     'X-Client-Type': 'Mobile',
