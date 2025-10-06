@@ -57,16 +57,17 @@ function HomeTabs() {
         headerTransparent: true,
         headerTitleAlign: 'center',
         headerTitleStyle: { fontSize: 16, fontWeight: 'bold' },
-        headerStatusBarHeight: 10,
-        // headerStyle: { height: 'auto' },
+        headerStyle: { height: 'auto' },
       })}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
       />
       <Tab.Screen
         name="Wallet"
